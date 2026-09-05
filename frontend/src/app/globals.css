@@ -2091,3 +2091,262 @@ html.dark .portfolioStatement {
     padding: 25px 20px;
   }
 }
+/* Contact Page */
+
+.contactHero {
+  min-height: 500px;
+  padding: 100px 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(36, 99, 235, 0.15),
+      transparent 38%
+    ),
+    linear-gradient(rgba(61, 95, 170, 0.05) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      rgba(61, 95, 170, 0.05) 1px,
+      transparent 1px
+    );
+  background-size: auto, 65px 65px, 65px 65px;
+}
+
+.contactHero h1 {
+  max-width: 1050px;
+  margin: 22px auto;
+  font-size: clamp(48px, 6vw, 86px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.contactHero h1 span {
+  display: block;
+  color: transparent;
+  background: linear-gradient(
+    100deg,
+    var(--cyan),
+    var(--blue),
+    var(--purple)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.contactHero > p:last-child {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.contactPageSection {
+  padding: 110px 6%;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+  gap: 75px;
+  background: var(--surface);
+}
+
+.contactInformation h2 {
+  margin: 16px 0 22px;
+  font-size: clamp(40px, 4vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.contactInformation > p:not(.tag) {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.contactDetailsGrid {
+  margin-top: 38px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contactDetailCard {
+  min-height: 110px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition:
+    transform 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.contactDetailCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue);
+  box-shadow: 0 16px 35px rgba(36, 99, 235, 0.1);
+}
+
+.contactDetailIcon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  border-radius: 12px;
+}
+
+.contactDetailCard > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactDetailCard small,
+.contactLocation small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.contactDetailCard strong {
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.contactLocation {
+  margin-top: 14px;
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--blue);
+  background: linear-gradient(135deg, #edf8ff, #faf4ff);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.contactLocation div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.contactLocation strong {
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Contact Form */
+
+.contactForm {
+  padding: 42px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(36, 99, 235, 0.1);
+}
+
+.contactForm .formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.contactForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.contactForm input,
+.contactForm textarea {
+  width: 100%;
+  padding: 15px 16px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+  font: inherit;
+  font-weight: 400;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.contactForm input {
+  min-height: 54px;
+}
+
+.contactForm textarea {
+  min-height: 190px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.contactForm input:focus,
+.contactForm textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(36, 99, 235, 0.12);
+}
+
+.contactForm .submitButton {
+  width: 100%;
+  margin-top: 26px;
+  gap: 10px;
+  border: 0;
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .contactPageSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .contactHero {
+    min-height: 440px;
+    padding: 75px 20px;
+  }
+
+  .contactHero h1 {
+    font-size: 46px;
+  }
+
+  .contactPageSection {
+    padding: 75px 20px;
+    gap: 50px;
+  }
+
+  .contactDetailsGrid,
+  .contactForm .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contactForm {
+    padding: 25px 20px;
+  }
+}
