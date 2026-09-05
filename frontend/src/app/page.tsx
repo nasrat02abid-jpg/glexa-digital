@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/components/layout/Header";
 
 const services = [
   {
@@ -75,8 +74,6 @@ const projects = [
 export default function Home() {
   return (
     <main>
-      <Header />
-
       <section className="hero">
         <div className="heroContent">
           <p className="tag">MEDIA • TECHNOLOGY • GROWTH</p>
@@ -92,11 +89,11 @@ export default function Home() {
           </p>
 
           <div className="buttons">
-            <Link href="#contact" className="primaryButton">
+            <Link href="/quote" className="primaryButton">
               Get a Free Proposal
             </Link>
 
-            <Link href="#services" className="secondaryButton">
+            <Link href="/services" className="secondaryButton">
               Explore Services
             </Link>
           </div>
@@ -109,7 +106,7 @@ export default function Home() {
           <div className="logoCore">
             <Image
               src="/glexa-logo.png"
-              alt="Glexa Digital"
+              alt="Glexa Digital media and technology agency"
               width={390}
               height={390}
               className="heroLogo"
@@ -127,20 +124,32 @@ export default function Home() {
           </div>
 
           <p>
-            Creative execution and technical thinking connected from the
-            first idea to the final result.
+            Creative execution and technical thinking connected from the first
+            idea to the final result.
           </p>
         </div>
 
         <div className="serviceGrid">
           {services.map((service, index) => (
             <article className="serviceCard" key={service.title}>
-              <span className="serviceNumber">0{index + 1}</span>
-              <div className="serviceIcon">{service.icon}</div>
+              <span className="serviceNumber">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <div className="serviceIcon" aria-hidden="true">
+                {service.icon}
+              </div>
+
               <h3>{service.title}</h3>
               <p>{service.description}</p>
             </article>
           ))}
+        </div>
+
+        <div className="buttons">
+          <Link href="/services" className="secondaryButton">
+            View All Services
+          </Link>
         </div>
       </section>
 
@@ -175,6 +184,12 @@ export default function Home() {
             </article>
           ))}
         </div>
+
+        <div className="buttons">
+          <Link href="/portfolio" className="secondaryButton">
+            View Full Portfolio
+          </Link>
+        </div>
       </section>
 
       <section className="about" id="about">
@@ -188,8 +203,15 @@ export default function Home() {
         <p>
           Glexa Digital is a modern media and technology agency based in
           Peshawar. We help businesses build stronger brands, reach the right
-          audience and make smarter decisions.
+          audience and make smarter decisions through creativity, automation
+          and data.
         </p>
+
+        <div className="buttons">
+          <Link href="/about" className="secondaryButton">
+            Learn More About Us
+          </Link>
+        </div>
       </section>
 
       <section className="contact" id="contact">
@@ -216,30 +238,10 @@ export default function Home() {
             rel="noopener noreferrer"
             className="secondaryButton"
           >
-            +92 325 9134916
+            WhatsApp: +92 325 9134916
           </a>
         </div>
       </section>
-
-      <footer>
-        <Image
-          src="/glexa-logo.png"
-          alt="Glexa Digital"
-          width={145}
-          height={72}
-          className="footerLogo"
-        />
-
-        <p>Media, technology and growth—connected.</p>
-
-        <a
-          href="https://glexadigital.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          glexadigital.com
-        </a>
-      </footer>
     </main>
   );
 }
