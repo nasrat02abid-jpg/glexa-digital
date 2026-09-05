@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/layout/Header";
 
 const services = [
   {
@@ -40,34 +41,43 @@ const services = [
   },
 ];
 
+const projects = [
+  {
+    category: "MEDIA PRODUCTION",
+    headline: "Brand Storytelling",
+    services: "Videography • Photography • Editing",
+    title: "Creative Media Campaign",
+    className: "portfolioOne",
+  },
+  {
+    category: "WEB DEVELOPMENT",
+    headline: "Digital Experience",
+    services: "Strategy • UI Design • Development",
+    title: "Modern Business Website",
+    className: "portfolioTwo",
+  },
+  {
+    category: "PERFORMANCE MARKETING",
+    headline: "Business Growth",
+    services: "Meta Ads • TikTok Ads • Google Ads",
+    title: "Digital Advertising Campaign",
+    className: "portfolioThree",
+  },
+  {
+    category: "DATA & AUTOMATION",
+    headline: "Smarter Decisions",
+    services: "WhatsApp • Analytics • Power BI",
+    title: "Automation & Analytics System",
+    className: "portfolioFour",
+  },
+];
+
 export default function Home() {
   return (
     <main>
-      <header className="navbar">
-        <Link href="/" className="brand" aria-label="Glexa Digital home">
-          <Image
-            src="/glexa-logo.png"
-            alt="Glexa Digital"
-            width={150}
-            height={76}
-            className="navbarLogo"
-            priority
-          />
-        </Link>
+      <Header />
 
-        <nav>
-          <Link href="#services">Services</Link>
-          <Link href="#portfolio">Portfolio</Link>
-          <Link href="#about">About</Link>
-          <Link href="#contact">Contact</Link>
-
-          <Link href="#contact" className="navButton">
-            Start a Project
-          </Link>
-        </nav>
-       </header>
-
-       <section className="hero">
+      <section className="hero">
         <div className="heroContent">
           <p className="tag">MEDIA • TECHNOLOGY • GROWTH</p>
 
@@ -90,9 +100,9 @@ export default function Home() {
               Explore Services
             </Link>
           </div>
-         </div>
+        </div>
 
-         <div className="heroVisual">
+        <div className="heroVisual">
           <div className="orbit orbitOne" />
           <div className="orbit orbitTwo" />
 
@@ -107,9 +117,9 @@ export default function Home() {
             />
           </div>
         </div>
-        </section>
+      </section>
 
-        <section className="services" id="services">
+      <section className="services" id="services">
         <div className="sectionHeading">
           <div>
             <p className="tag">OUR SERVICES</p>
@@ -120,84 +130,51 @@ export default function Home() {
             Creative execution and technical thinking connected from the
             first idea to the final result.
           </p>
-          </div>
+        </div>
 
-          <div className="serviceGrid">
+        <div className="serviceGrid">
           {services.map((service, index) => (
             <article className="serviceCard" key={service.title}>
               <span className="serviceNumber">0{index + 1}</span>
-
               <div className="serviceIcon">{service.icon}</div>
-
               <h3>{service.title}</h3>
               <p>{service.description}</p>
             </article>
           ))}
         </div>
-        </section>
+      </section>
 
       <section className="portfolio" id="portfolio">
-      <div className="sectionHeading">
-      <div>
-      <p className="tag">OUR PORTFOLIO</p>
-      <h2>Selected work that creates real impact.</h2>
-      </div>
+        <div className="sectionHeading">
+          <div>
+            <p className="tag">OUR PORTFOLIO</p>
+            <h2>Selected work that creates real impact.</h2>
+          </div>
 
-    <p>
-      A selection of creative, technology and growth projects developed
-      for modern businesses.
-    </p>
-    </div>
+          <p>
+            A selection of creative, technology and growth projects developed
+            for modern businesses.
+          </p>
+        </div>
 
-    <div className="portfolioGrid">
-    <article className="portfolioCard portfolioOne">
-      <div className="projectVisual">
-        <span>MEDIA PRODUCTION</span>
-        <strong>Brand Storytelling</strong>
-      </div>
+        <div className="portfolioGrid">
+          {projects.map((project) => (
+            <article
+              className={`portfolioCard ${project.className}`}
+              key={project.title}
+            >
+              <div className="projectVisual">
+                <span>{project.category}</span>
+                <strong>{project.headline}</strong>
+              </div>
 
-      <div className="projectDetails">
-        <p>Videography • Photography • Editing</p>
-        <h3>Creative Media Campaign</h3>
-      </div>
-      </article>
-
-      <article className="portfolioCard portfolioTwo">
-      <div className="projectVisual">
-        <span>WEB DEVELOPMENT</span>
-        <strong>Digital Experience</strong>
-      </div>
-
-      <div className="projectDetails">
-        <p>Strategy • UI Design • Development</p>
-        <h3>Modern Business Website</h3>
-      </div>
-      </article>
-
-      <article className="portfolioCard portfolioThree">
-      <div className="projectVisual">
-        <span>PERFORMANCE MARKETING</span>
-        <strong>Business Growth</strong>
-      </div>
-
-      <div className="projectDetails">
-        <p>Meta Ads • TikTok Ads • Google Ads</p>
-        <h3>Digital Advertising Campaign</h3>
-      </div>
-      </article>
-
-      <article className="portfolioCard portfolioFour">
-      <div className="projectVisual">
-        <span>DATA & AUTOMATION</span>
-        <strong>Smarter Decisions</strong>
-      </div>
-
-      <div className="projectDetails">
-        <p>WhatsApp • Analytics • Power BI</p>
-        <h3>Automation & Analytics System</h3>
-      </div>
-      </article>
-      </div>
+              <div className="projectDetails">
+                <p>{project.services}</p>
+                <h3>{project.title}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="about" id="about">

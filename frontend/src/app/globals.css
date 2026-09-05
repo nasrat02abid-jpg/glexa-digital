@@ -3,12 +3,26 @@
 :root {
   --background: #f7f9ff;
   --surface: #ffffff;
+  --surface-soft: #f1f5ff;
   --text: #071536;
   --muted: #5f6d89;
   --cyan: #00add8;
   --blue: #2463eb;
   --purple: #8528e8;
   --border: rgba(34, 72, 150, 0.14);
+  --header-bg: rgba(255, 255, 255, 0.94);
+  --shadow: rgba(31, 78, 175, 0.14);
+}
+
+html.dark {
+  --background: #071022;
+  --surface: #0d1930;
+  --surface-soft: #101e38;
+  --text: #f4f7ff;
+  --muted: #a9b5cc;
+  --border: rgba(151, 174, 220, 0.18);
+  --header-bg: rgba(7, 16, 34, 0.94);
+  --shadow: rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -24,6 +38,16 @@ body {
   background: var(--background);
   color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 a {
@@ -31,90 +55,172 @@ a {
   text-decoration: none;
 }
 
-/* Navbar */
+/* Header */
 
-.navbar {
+.siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   width: 100%;
-  height: 96px;
-  padding: 0 6%;
+  height: 88px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.headerContainer {
+  width: min(calc(100% - 40px), 1680px);
+  height: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(18px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  gap: 30px;
 }
 
-.brand {
-  width: 150px;
-  height: 84px;
+.headerLogo {
+  width: 145px;
+  height: 76px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
 }
 
-.navbarLogo {
-  width: 145px;
-  height: 78px;
+.headerLogo img {
+  width: 100%;
+  height: 100%;
   display: block;
   object-fit: contain;
 }
 
-nav {
+.siteHeader .mainNav {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 32px;
-  font-size: 14px;
-  font-weight: 700;
+  justify-content: flex-end;
+  gap: 27px;
 }
 
-nav a:hover {
+.siteHeader .mainNav a {
+  position: relative;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.siteHeader .mainNav a:not(.headerCta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 2px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  transition: width 0.25s ease;
+}
+
+.siteHeader .mainNav a:not(.headerCta):hover::after {
+  width: 100%;
+}
+
+.siteHeader .mainNav a:hover {
   color: var(--blue);
+}
+
+.siteHeader .mainNav .headerCta {
+  min-height: 44px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border-radius: 10px;
+  background: linear-gradient(115deg, var(--blue), var(--purple));
+  box-shadow: 0 10px 25px rgba(36, 99, 235, 0.2);
+}
+
+.siteHeader .mainNav .headerCta:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.iconButton {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.iconButton:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+  transform: translateY(-2px);
+}
+
+.menuButton {
+  display: none;
 }
 
 /* Buttons */
 
-.navButton,
 .primaryButton,
 .secondaryButton {
+  min-height: 52px;
+  padding: 0 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 0 24px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   transition:
-    transform 0.25s,
-    box-shadow 0.25s;
-}
-
-.navButton {
-  min-height: 44px;
-  color: white;
-  background: linear-gradient(120deg, var(--blue), var(--purple));
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .primaryButton {
-  color: white;
+  color: #ffffff;
   background: linear-gradient(115deg, var(--blue), var(--purple));
   box-shadow: 0 15px 35px rgba(36, 99, 235, 0.22);
 }
 
 .secondaryButton {
-  background: white;
+  color: var(--text);
+  background: var(--surface);
   border: 1px solid var(--border);
 }
 
 .primaryButton:hover,
-.secondaryButton:hover,
-.navButton:hover {
+.secondaryButton:hover {
   transform: translateY(-3px);
+}
+
+.secondaryButton:hover {
+  border-color: var(--blue);
 }
 
 /* Hero */
@@ -142,6 +248,7 @@ nav a:hover {
 }
 
 .tag {
+  margin: 0;
   color: #008eb4;
   font-size: 12px;
   font-weight: 800;
@@ -178,6 +285,7 @@ nav a:hover {
 
 .buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 14px;
   margin-top: 38px;
 }
@@ -194,12 +302,12 @@ nav a:hover {
   height: 330px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: white;
-  border: 1px solid var(--border);
-  box-shadow: 0 30px 90px rgba(31, 78, 175, 0.14);
   position: relative;
   z-index: 2;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 30px 90px var(--shadow);
 }
 
 .heroLogo {
@@ -210,8 +318,8 @@ nav a:hover {
 
 .orbit {
   position: absolute;
-  border-radius: 50%;
   border: 1px solid rgba(36, 99, 235, 0.2);
+  border-radius: 50%;
 }
 
 .orbitOne {
@@ -232,19 +340,14 @@ nav a:hover {
   }
 }
 
-/* Services */
-
-.services {
-  padding: 110px 6%;
-  background: white;
-}
+/* Shared headings */
 
 .sectionHeading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 50px;
   margin-bottom: 55px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 50px;
 }
 
 .sectionHeading h2,
@@ -259,8 +362,16 @@ nav a:hover {
 
 .sectionHeading > p {
   max-width: 450px;
+  margin: 0;
   color: var(--muted);
   line-height: 1.7;
+}
+
+/* Services */
+
+.services {
+  padding: 110px 6%;
+  background: var(--surface);
 }
 
 .serviceGrid {
@@ -273,25 +384,35 @@ nav a:hover {
 .serviceCard {
   min-height: 310px;
   padding: 34px;
+  background: var(--surface);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   transition:
-    transform 0.25s,
-    background 0.25s;
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .serviceCard:hover {
+  position: relative;
+  z-index: 2;
   transform: translateY(-5px);
   background: linear-gradient(145deg, #effbff, #faf4ff);
+  box-shadow: 0 20px 50px var(--shadow);
+}
+
+html.dark .serviceCard:hover {
+  background: linear-gradient(145deg, #102841, #21183d);
 }
 
 .serviceNumber {
-  color: #657594;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 700;
 }
 
 .serviceIcon {
+  min-height: 32px;
   margin-top: 55px;
   color: var(--cyan);
   font-size: 26px;
@@ -299,60 +420,22 @@ nav a:hover {
 }
 
 .serviceCard h3 {
-  margin-top: 28px;
-  margin-bottom: 14px;
+  margin: 28px 0 14px;
+  color: var(--text);
   font-size: 24px;
 }
 
 .serviceCard p {
+  margin: 0;
   color: var(--muted);
   line-height: 1.7;
-}
-
-/* About */
-
-.about {
-  padding: 110px 6%;
-  background: linear-gradient(135deg, #f6faff, #faf7ff);
-}
-
-.about h2 span {
-  color: var(--blue);
-}
-
-.about > p:last-child {
-  max-width: 780px;
-  color: var(--muted);
-  font-size: 18px;
-  line-height: 1.8;
-}
-
-/* Contact */
-
-.contact {
-  padding: 110px 6%;
-  text-align: center;
-  background: linear-gradient(135deg, #eef7ff, #faf3ff);
-}
-
-.contact h2 {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.contact > p:not(.tag) {
-  color: var(--muted);
-}
-
-.contactButtons {
-  justify-content: center;
 }
 
 /* Portfolio */
 
 .portfolio {
   padding: 110px 6%;
-  background: #f7f9ff;
+  background: var(--background);
 }
 
 .portfolioGrid {
@@ -363,17 +446,17 @@ nav a:hover {
 
 .portfolioCard {
   overflow: hidden;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
   transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .portfolioCard:hover {
   transform: translateY(-7px);
-  box-shadow: 0 25px 60px rgba(34, 72, 150, 0.13);
+  box-shadow: 0 25px 60px var(--shadow);
 }
 
 .projectVisual {
@@ -409,6 +492,8 @@ nav a:hover {
 }
 
 .projectVisual span {
+  position: relative;
+  z-index: 2;
   color: rgba(255, 255, 255, 0.85);
   font-size: 11px;
   font-weight: 800;
@@ -417,12 +502,12 @@ nav a:hover {
 
 .projectVisual strong {
   max-width: 350px;
-  color: white;
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
   font-size: clamp(34px, 4vw, 55px);
   line-height: 0.95;
   letter-spacing: -0.045em;
-  position: relative;
-  z-index: 2;
 }
 
 .portfolioOne .projectVisual {
@@ -457,14 +542,51 @@ nav a:hover {
   font-size: 23px;
 }
 
-@media (max-width: 700px) {
-  .portfolioGrid {
-    grid-template-columns: 1fr;
-  }
+/* About */
 
-  .projectVisual {
-    min-height: 270px;
-  }
+.about {
+  padding: 110px 6%;
+  background: linear-gradient(135deg, #f6faff, #faf7ff);
+}
+
+html.dark .about {
+  background: linear-gradient(135deg, #0a172c, #17132c);
+}
+
+.about h2 span {
+  color: var(--blue);
+}
+
+.about > p:last-child {
+  max-width: 780px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* Contact */
+
+.contact {
+  padding: 110px 6%;
+  text-align: center;
+  background: linear-gradient(135deg, #eef7ff, #faf3ff);
+}
+
+html.dark .contact {
+  background: linear-gradient(135deg, #0b1c31, #1c1533);
+}
+
+.contact h2 {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.contact > p:not(.tag) {
+  color: var(--muted);
+}
+
+.contactButtons {
+  justify-content: center;
 }
 
 /* Footer */
@@ -475,9 +597,9 @@ footer {
   align-items: center;
   justify-content: space-between;
   gap: 30px;
-  background: white;
-  border-top: 1px solid var(--border);
   color: var(--muted);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
 }
 
 .footerLogo {
@@ -493,9 +615,71 @@ footer a {
 
 /* Tablet */
 
+@media (max-width: 1050px) {
+  .siteHeader .mainNav {
+    gap: 17px;
+  }
+
+  .siteHeader .mainNav a {
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 900px) {
-  nav a:not(.navButton) {
+  .siteHeader {
+    height: 76px;
+  }
+
+  .headerContainer {
+    width: min(calc(100% - 32px), 1680px);
+  }
+
+  .headerLogo {
+    width: 125px;
+    height: 65px;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .siteHeader .mainNav {
+    position: absolute;
+    top: 76px;
+    left: 16px;
+    right: 16px;
+    margin: 0;
+    padding: 20px;
     display: none;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: 0 24px 70px var(--shadow);
+  }
+
+  .siteHeader .mainNavOpen {
+    display: flex;
+  }
+
+  .siteHeader .mainNav a {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 8px;
+  }
+
+  .siteHeader .mainNav a:hover {
+    background: rgba(36, 99, 235, 0.08);
+  }
+
+  .siteHeader .mainNav a::after {
+    display: none;
+  }
+
+  .siteHeader .mainNav .headerCta {
+    margin-top: 8px;
   }
 
   .hero {
@@ -513,30 +697,36 @@ footer a {
   .sectionHeading {
     display: block;
   }
+
+  .sectionHeading > p {
+    margin-top: 20px;
+  }
 }
 
 /* Mobile */
 
+@media (max-width: 700px) {
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .projectVisual {
+    min-height: 270px;
+  }
+}
+
 @media (max-width: 600px) {
-  .navbar {
-    height: 82px;
-    padding: 0 20px;
+  .headerContainer {
+    width: calc(100% - 24px);
   }
 
-  .brand {
-    width: 120px;
-    height: 72px;
+  .headerLogo {
+    width: 112px;
   }
 
-  .navbarLogo {
-    width: 115px;
-    height: 68px;
-  }
-
-  .navButton {
-    min-height: 42px;
-    padding: 0 14px;
-    font-size: 12px;
+  .iconButton {
+    width: 40px;
+    height: 40px;
   }
 
   .hero {
@@ -568,6 +758,7 @@ footer a {
   }
 
   .services,
+  .portfolio,
   .about,
   .contact {
     padding: 75px 20px;
@@ -584,5 +775,21 @@ footer a {
 
   footer {
     text-align: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 41px;
+  }
+
+  .orbitOne {
+    width: 250px;
+    height: 250px;
+  }
+
+  .orbitTwo {
+    width: 290px;
+    height: 290px;
   }
 }
