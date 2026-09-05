@@ -348,6 +348,125 @@ nav a:hover {
   justify-content: center;
 }
 
+/* Portfolio */
+
+.portfolio {
+  padding: 110px 6%;
+  background: #f7f9ff;
+}
+
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.portfolioCard {
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.portfolioCard:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 25px 60px rgba(34, 72, 150, 0.13);
+}
+
+.projectVisual {
+  min-height: 330px;
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.projectVisual::before {
+  content: "";
+  width: 230px;
+  height: 230px;
+  position: absolute;
+  right: -45px;
+  bottom: -65px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+.projectVisual::after {
+  content: "";
+  width: 145px;
+  height: 145px;
+  position: absolute;
+  right: 15px;
+  bottom: -25px;
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+}
+
+.projectVisual span {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.projectVisual strong {
+  max-width: 350px;
+  color: white;
+  font-size: clamp(34px, 4vw, 55px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  position: relative;
+  z-index: 2;
+}
+
+.portfolioOne .projectVisual {
+  background: linear-gradient(135deg, #075ad8, #00bce8);
+}
+
+.portfolioTwo .projectVisual {
+  background: linear-gradient(135deg, #102557, #6647ed);
+}
+
+.portfolioThree .projectVisual {
+  background: linear-gradient(135deg, #7226da, #e02db7);
+}
+
+.portfolioFour .projectVisual {
+  background: linear-gradient(135deg, #057b99, #1b55e5);
+}
+
+.projectDetails {
+  padding: 26px 30px;
+}
+
+.projectDetails p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.projectDetails h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 23px;
+}
+
+@media (max-width: 700px) {
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .projectVisual {
+    min-height: 270px;
+  }
+}
+
 /* Footer */
 
 footer {

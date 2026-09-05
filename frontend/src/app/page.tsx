@@ -57,6 +57,7 @@ export default function Home() {
 
         <nav>
           <Link href="#services">Services</Link>
+          <Link href="#portfolio">Portfolio</Link>
           <Link href="#about">About</Link>
           <Link href="#contact">Contact</Link>
 
@@ -64,9 +65,9 @@ export default function Home() {
             Start a Project
           </Link>
         </nav>
-      </header>
+       </header>
 
-      <section className="hero">
+       <section className="hero">
         <div className="heroContent">
           <p className="tag">MEDIA • TECHNOLOGY • GROWTH</p>
 
@@ -89,9 +90,9 @@ export default function Home() {
               Explore Services
             </Link>
           </div>
-        </div>
+         </div>
 
-        <div className="heroVisual">
+         <div className="heroVisual">
           <div className="orbit orbitOne" />
           <div className="orbit orbitTwo" />
 
@@ -106,9 +107,9 @@ export default function Home() {
             />
           </div>
         </div>
-      </section>
+        </section>
 
-      <section className="services" id="services">
+        <section className="services" id="services">
         <div className="sectionHeading">
           <div>
             <p className="tag">OUR SERVICES</p>
@@ -119,9 +120,9 @@ export default function Home() {
             Creative execution and technical thinking connected from the
             first idea to the final result.
           </p>
-        </div>
+          </div>
 
-        <div className="serviceGrid">
+          <div className="serviceGrid">
           {services.map((service, index) => (
             <article className="serviceCard" key={service.title}>
               <span className="serviceNumber">0{index + 1}</span>
@@ -133,6 +134,70 @@ export default function Home() {
             </article>
           ))}
         </div>
+        </section>
+
+      <section className="portfolio" id="portfolio">
+      <div className="sectionHeading">
+      <div>
+      <p className="tag">OUR PORTFOLIO</p>
+      <h2>Selected work that creates real impact.</h2>
+      </div>
+
+    <p>
+      A selection of creative, technology and growth projects developed
+      for modern businesses.
+    </p>
+    </div>
+
+    <div className="portfolioGrid">
+    <article className="portfolioCard portfolioOne">
+      <div className="projectVisual">
+        <span>MEDIA PRODUCTION</span>
+        <strong>Brand Storytelling</strong>
+      </div>
+
+      <div className="projectDetails">
+        <p>Videography • Photography • Editing</p>
+        <h3>Creative Media Campaign</h3>
+      </div>
+      </article>
+
+      <article className="portfolioCard portfolioTwo">
+      <div className="projectVisual">
+        <span>WEB DEVELOPMENT</span>
+        <strong>Digital Experience</strong>
+      </div>
+
+      <div className="projectDetails">
+        <p>Strategy • UI Design • Development</p>
+        <h3>Modern Business Website</h3>
+      </div>
+      </article>
+
+      <article className="portfolioCard portfolioThree">
+      <div className="projectVisual">
+        <span>PERFORMANCE MARKETING</span>
+        <strong>Business Growth</strong>
+      </div>
+
+      <div className="projectDetails">
+        <p>Meta Ads • TikTok Ads • Google Ads</p>
+        <h3>Digital Advertising Campaign</h3>
+      </div>
+      </article>
+
+      <article className="portfolioCard portfolioFour">
+      <div className="projectVisual">
+        <span>DATA & AUTOMATION</span>
+        <strong>Smarter Decisions</strong>
+      </div>
+
+      <div className="projectDetails">
+        <p>WhatsApp • Analytics • Power BI</p>
+        <h3>Automation & Analytics System</h3>
+      </div>
+      </article>
+      </div>
       </section>
 
       <section className="about" id="about">
