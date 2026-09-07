@@ -10,6 +10,8 @@ import {
   Target,
 } from "lucide-react";
 
+import TeamSection from "@/components/about/TeamSection";
+
 export const metadata: Metadata = {
   title: "About Us",
   description:
@@ -88,7 +90,6 @@ export default function AboutPage() {
       <section className="aboutStory">
         <div>
           <p className="tag">OUR STORY</p>
-
           <h2>A connected approach to digital growth.</h2>
         </div>
 
@@ -114,6 +115,7 @@ export default function AboutPage() {
           <span>01</span>
           <p className="tag">OUR MISSION</p>
           <h2>Make modern digital growth accessible and practical.</h2>
+
           <p>
             Our mission is to help businesses use creativity and technology
             with purpose—not simply follow trends.
@@ -124,6 +126,7 @@ export default function AboutPage() {
           <span>02</span>
           <p className="tag">OUR VISION</p>
           <h2>Become a trusted media and technology partner.</h2>
+
           <p>
             We aim to build long-term partnerships with businesses in Pakistan
             and international markets.
@@ -162,9 +165,13 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <TeamSection />
+
       <section className="aboutCta">
         <p className="tag">WORK WITH GLEXA</p>
+
         <h2>Let&apos;s build something valuable together.</h2>
+
         <p>
           Tell us about your business, challenge or next digital project.
         </p>
