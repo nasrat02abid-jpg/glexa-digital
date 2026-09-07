@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { CheckCircle2, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, LoaderCircle, Send } from "lucide-react";
 
 const initialForm = {
   fullName: "",
@@ -11,23 +11,53 @@ const initialForm = {
   message: "",
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 export default function ContactForm() {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setForm({
-      ...form,
+    setForm((current) => ({
+      ...current,
       [event.target.name]: event.target.value,
-    });
+    }));
+
+    setError("");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    setError("");
 
-    const whatsappMessage = `
+    try {
+      const response = await fetch(`${API_URL}/api/inquiries/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          full_name: form.fullName.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          subject: form.subject.trim(),
+          message: form.message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.detail || "Unable to submit your message.");
+      }
+
+      const whatsappMessage = `
 Hello Glexa Digital,
 
 I am contacting you through your website.
@@ -39,16 +69,27 @@ Subject: ${form.subject}
 
 Message:
 ${form.message}
-    `.trim();
+      `.trim();
 
-    window.open(
-      `https://wa.me/923159516604?text=${encodeURIComponent(
-        whatsappMessage
-      )}`,
-      "_blank"
-    );
+      setSubmitted(true);
+      setForm(initialForm);
 
-    setSubmitted(true);
+      window.open(
+        `https://wa.me/923159516604?text=${encodeURIComponent(
+          whatsappMessage
+        )}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -56,20 +97,17 @@ ${form.message}
       <div className="formSuccess">
         <CheckCircle2 size={52} />
 
-        <h2>Your message is ready.</h2>
+        <h2>Message submitted successfully.</h2>
 
         <p>
-          WhatsApp has opened with your message. Send it to contact the Glexa
-          Digital team.
+          Your inquiry has been received by Glexa Digital. WhatsApp has also
+          opened for direct communication.
         </p>
 
         <button
           type="button"
           className="primaryButton"
-          onClick={() => {
-            setForm(initialForm);
-            setSubmitted(false);
-          }}
+          onClick={() => setSubmitted(false)}
         >
           Send Another Message
         </button>
@@ -88,6 +126,8 @@ ${form.message}
             value={form.fullName}
             onChange={handleChange}
             placeholder="Enter your full name"
+            minLength={2}
+            maxLength={120}
             required
           />
         </label>
@@ -112,6 +152,8 @@ ${form.message}
             value={form.phone}
             onChange={handleChange}
             placeholder="+92 300 0000000"
+            minLength={7}
+            maxLength={30}
             required
           />
         </label>
@@ -124,6 +166,8 @@ ${form.message}
             value={form.subject}
             onChange={handleChange}
             placeholder="How can we help?"
+            minLength={2}
+            maxLength={200}
             required
           />
         </label>
@@ -137,13 +181,35 @@ ${form.message}
           onChange={handleChange}
           rows={7}
           placeholder="Tell us about your question or project."
+          minLength={10}
+          maxLength={5000}
           required
         />
       </label>
 
-      <button type="submit" className="primaryButton submitButton">
-        <Send size={18} />
-        Send Message on WhatsApp
+      {error && (
+        <div className="formError" role="alert">
+          <AlertCircle size={20} />
+          <span>{error}</span>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="primaryButton submitButton"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <>
+            <LoaderCircle className="loadingSpinner" size={18} />
+            Submitting...
+          </>
+        ) : (
+          <>
+            <Send size={18} />
+            Submit & Continue on WhatsApp
+          </>
+        )}
       </button>
     </form>
   );
