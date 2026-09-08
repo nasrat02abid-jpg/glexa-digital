@@ -1,7 +1,12 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { CheckCircle2, Upload } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  LoaderCircle,
+  Upload,
+} from "lucide-react";
 
 const initialForm = {
   fullName: "",
@@ -13,46 +18,145 @@ const initialForm = {
   message: "",
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx"];
+
 export default function JobApplicationForm() {
   const [form, setForm] = useState(initialForm);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const [fileInputKey, setFileInputKey] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
-    setForm({
-      ...form,
+    setForm((current) => ({
+      ...current,
       [event.target.name]: event.target.value,
-    });
+    }));
+
+    setError("");
   };
 
   const handleFile = (event: ChangeEvent<HTMLInputElement>) => {
-    setFileName(event.target.files?.[0]?.name ?? "");
+    const file = event.target.files?.[0];
+
+    setError("");
+
+    if (!file) {
+      setSelectedFile(null);
+      setFileName("");
+      return;
+    }
+
+    const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
+
+    if (!ALLOWED_EXTENSIONS.includes(extension)) {
+      setSelectedFile(null);
+      setFileName("");
+      setError("Only PDF, DOC and DOCX files are allowed.");
+      setFileInputKey((current) => current + 1);
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setSelectedFile(null);
+      setFileName("");
+      setError("The CV file must not exceed 5 MB.");
+      setFileInputKey((current) => current + 1);
+      return;
+    }
+
+    setSelectedFile(file);
+    setFileName(file.name);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
+
+    if (!selectedFile) {
+      setError("Please upload your CV or resume.");
+      return;
+    }
+
+    const submitApplication = async () => {
+      setIsSubmitting(true);
+      setError("");
+
+      const applicationData = new FormData();
+
+      applicationData.append("full_name", form.fullName.trim());
+      applicationData.append("email", form.email.trim());
+      applicationData.append("phone", form.phone.trim());
+      applicationData.append("position", form.position);
+      applicationData.append("experience", form.experience);
+      applicationData.append("message", form.message.trim());
+      applicationData.append("cv", selectedFile);
+
+      if (form.portfolio.trim()) {
+        applicationData.append("portfolio", form.portfolio.trim());
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/api/applications`, {
+          method: "POST",
+          body: applicationData,
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => null);
+
+          throw new Error(
+            data?.detail || "Unable to submit your application."
+          );
+        }
+
+        setForm(initialForm);
+        setSelectedFile(null);
+        setFileName("");
+        setFileInputKey((current) => current + 1);
+        setSubmitted(true);
+      } catch (submitError) {
+        setError(
+          submitError instanceof Error
+            ? submitError.message
+            : "Something went wrong. Please try again."
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    void submitApplication();
   };
 
   if (submitted) {
     return (
       <div className="formSuccess">
         <CheckCircle2 size={52} />
-        <h2>Application prepared successfully.</h2>
+
+        <h2>Application submitted successfully.</h2>
+
         <p>
-          The application interface is working. Database submission will be
-          enabled when the Glexa backend is connected.
+          Your application and CV have been received by Glexa Digital. Our
+          team will review your information when a suitable opportunity is
+          available.
         </p>
 
         <button
           type="button"
           className="primaryButton"
           onClick={() => {
-            setForm(initialForm);
-            setFileName("");
             setSubmitted(false);
+            setError("");
           }}
         >
           Submit Another Application
@@ -72,6 +176,8 @@ export default function JobApplicationForm() {
             value={form.fullName}
             onChange={handleChange}
             placeholder="Enter your full name"
+            minLength={2}
+            maxLength={150}
             required
           />
         </label>
@@ -96,6 +202,8 @@ export default function JobApplicationForm() {
             value={form.phone}
             onChange={handleChange}
             placeholder="+92 300 0000000"
+            minLength={7}
+            maxLength={50}
             required
           />
         </label>
@@ -109,15 +217,15 @@ export default function JobApplicationForm() {
             required
           >
             <option value="">Select a position</option>
-            <option value="Content Creator">Content Creator</option>
-            <option value="Videographer">Videographer</option>
-            <option value="Video Editor">Video Editor</option>
-            <option value="Web Developer">Web Developer</option>
-            <option value="Digital Marketing Intern">
-              Digital Marketing Intern
-            </option>
-            <option value="Data Analyst Intern">Data Analyst Intern</option>
-            <option value="Other">Other</option>
+            <option>Content Creator</option>
+            <option>Videographer</option>
+            <option>Video Editor</option>
+            <option>Web Developer</option>
+            <option>AI & Automation Developer</option>
+            <option>AI Solutions Intern</option>
+            <option>Digital Marketing Intern</option>
+            <option>Data Analyst Intern</option>
+            <option>Other</option>
           </select>
         </label>
 
@@ -130,11 +238,11 @@ export default function JobApplicationForm() {
             required
           >
             <option value="">Select experience</option>
-            <option value="Fresh">Fresh</option>
-            <option value="Less than 1 year">Less than 1 year</option>
-            <option value="1-2 years">1–2 years</option>
-            <option value="3-5 years">3–5 years</option>
-            <option value="More than 5 years">More than 5 years</option>
+            <option>Fresh</option>
+            <option>Less than 1 year</option>
+            <option>1–2 years</option>
+            <option>3–5 years</option>
+            <option>More than 5 years</option>
           </select>
         </label>
 
@@ -146,6 +254,7 @@ export default function JobApplicationForm() {
             value={form.portfolio}
             onChange={handleChange}
             placeholder="https://yourportfolio.com"
+            maxLength={500}
           />
         </label>
       </div>
@@ -158,25 +267,49 @@ export default function JobApplicationForm() {
           onChange={handleChange}
           placeholder="Tell us about your skills and why you want to join Glexa Digital."
           rows={7}
+          minLength={10}
+          maxLength={5000}
           required
         />
       </label>
 
       <label className="fileUpload">
         <Upload size={25} />
+
         <span>{fileName || "Upload CV or Resume"}</span>
-        <small>PDF or DOCX, maximum 5 MB</small>
+
+        <small>PDF, DOC or DOCX — maximum 5 MB</small>
 
         <input
+          key={fileInputKey}
           type="file"
+          name="cv"
           accept=".pdf,.doc,.docx"
           onChange={handleFile}
           required
         />
       </label>
 
-      <button type="submit" className="primaryButton submitButton">
-        Submit Application
+      {error && (
+        <div className="formError" role="alert">
+          <AlertCircle size={20} />
+          <span>{error}</span>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="primaryButton submitButton"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <>
+            <LoaderCircle className="loadingSpinner" size={18} />
+            Submitting Application...
+          </>
+        ) : (
+          "Submit Application"
+        )}
       </button>
     </form>
   );

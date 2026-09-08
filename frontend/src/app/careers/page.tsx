@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import {
   BarChart3,
+  Bot,
   Code2,
   Film,
   MapPin,
@@ -27,6 +28,12 @@ const positions = [
     type: "Contract",
     location: "Peshawar",
     icon: Film,
+  },
+  {
+  title: "AI & Automation Developer",
+  type: "Project Based",
+  location: "Hybrid",
+  icon: Bot,
   },
   {
     title: "Web Developer",

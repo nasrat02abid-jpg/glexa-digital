@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.api.quotes import router as quotes_router
 from app.models.quote import QuoteRequest
+from app.api.applications import router as applications_router
+from app.models.application import JobApplication
 
 from app.api.inquiries import router as inquiries_router
 from app.db.session import engine
@@ -32,6 +34,7 @@ app.add_middleware(
 
 app.include_router(inquiries_router)
 app.include_router(quotes_router)
+app.include_router(applications_router)
 
 allowed_origins = [
     "http://localhost:3000",
