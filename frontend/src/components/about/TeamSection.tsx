@@ -1,5 +1,4 @@
 import Image from "next/image";
-import styles from "./TeamSection.module.css";
 import {
   FaFacebookF,
   FaGithub,
@@ -62,8 +61,8 @@ const teamMembers = [
 
 export default function TeamSection() {
   return (
-    <section className={styles.section}>
-      <div className={styles.heading}>
+    <section className="teamSection">
+      <div className="teamHeading">
         <p className="tag">OUR TEAM</p>
 
         <h2>Meet the people behind Glexa Digital.</h2>
@@ -74,10 +73,10 @@ export default function TeamSection() {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <div className="teamGrid">
         {teamMembers.map((member, index) => (
-          <article className={styles.card} key={member.name}>
-            <div className={styles.photo}>
+          <article className="teamCard" key={member.name}>
+            <div className="teamPhoto">
               <Image
                 src={member.image}
                 alt={`${member.name} — ${member.role}`}
@@ -87,20 +86,20 @@ export default function TeamSection() {
               />
             </div>
 
-            <div className={styles.content}>
-              <span className={styles.role}>{member.role}</span>
+            <div className="teamContent">
+              <span className="teamRole">{member.role}</span>
 
               <h3>{member.name}</h3>
 
-              <p className={styles.description}>{member.description}</p>
+              <p>{member.description}</p>
 
-              <div className={styles.skills}>
+              <div className="teamSkills">
                 {member.skills.map((skill) => (
                   <span key={skill}>{skill}</span>
                 ))}
               </div>
 
-              <div className={styles.socials}>
+              <div className="teamSocials">
                 {member.links.map((link) => {
                   const Icon = link.icon;
 

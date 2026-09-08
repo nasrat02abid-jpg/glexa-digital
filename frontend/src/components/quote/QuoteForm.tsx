@@ -1,7 +1,12 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { CheckCircle2, Send } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  LoaderCircle,
+  Send,
+} from "lucide-react";
 
 const initialForm = {
   fullName: "",
@@ -14,25 +19,45 @@ const initialForm = {
   details: "",
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 export default function QuoteForm() {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     event: ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    setForm({
-      ...form,
+    setForm((current) => ({
+      ...current,
       [event.target.name]: event.target.value,
-    });
+    }));
+
+    setError("");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    const message = `
+  // Open a blank tab immediately to avoid the browser popup blocker.
+  const whatsappWindow = window.open("", "_blank");
+
+  if (whatsappWindow) {
+    whatsappWindow.document.title = "Opening WhatsApp...";
+    whatsappWindow.document.body.innerHTML =
+      "<p style='font-family: Arial; padding: 30px;'>Opening WhatsApp...</p>";
+    whatsappWindow.opener = null;
+  }
+
+  setIsSubmitting(true);
+  setError("");
+
+  const whatsappMessage = `
 Hello Glexa Digital,
 
 I would like to request a project quotation.
@@ -47,32 +72,78 @@ Deadline: ${form.deadline || "Flexible"}
 
 Project Details:
 ${form.details}
-    `.trim();
+  `.trim();
 
-    window.open(
-      `https://wa.me/923159516604?text=${encodeURIComponent(message)}`,
-      "_blank"
-    );
+  const whatsappUrl = `https://wa.me/923159516604?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
 
+  try {
+    const response = await fetch(`${API_URL}/api/quotes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        full_name: form.fullName.trim(),
+        company: form.company.trim() || null,
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        service: form.service,
+        budget: form.budget,
+        deadline: form.deadline || null,
+        details: form.details.trim(),
+      }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+
+      throw new Error(
+        data?.detail || "Unable to submit your quotation request."
+      );
+    }
+
+    setForm(initialForm);
     setSubmitted(true);
-  };
+
+    if (whatsappWindow) {
+      whatsappWindow.location.replace(whatsappUrl);
+    } else {
+      window.location.assign(whatsappUrl);
+    }
+  } catch (submitError) {
+    whatsappWindow?.close();
+
+    setError(
+      submitError instanceof Error
+        ? submitError.message
+        : "Something went wrong. Please try again."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   if (submitted) {
     return (
       <div className="formSuccess">
         <CheckCircle2 size={52} />
-        <h2>Your quotation request is ready.</h2>
+
+        <h2>Quotation request submitted.</h2>
+
         <p>
-          WhatsApp has been opened with your project information. Send the
-          prepared message to contact the Glexa Digital team.
+          Your project details have been received by Glexa Digital. WhatsApp
+          has also opened for direct communication.
         </p>
 
         <button
           type="button"
           className="primaryButton"
           onClick={() => {
-            setForm(initialForm);
             setSubmitted(false);
+            setError("");
           }}
         >
           Request Another Quote
@@ -92,9 +163,12 @@ ${form.details}
             value={form.fullName}
             onChange={handleChange}
             placeholder="Enter your full name"
+            minLength={2}
+            maxLength={150}
             required
           />
         </label>
+
 
         <label>
           Company Name
@@ -104,6 +178,7 @@ ${form.details}
             value={form.company}
             onChange={handleChange}
             placeholder="Your business or company"
+            maxLength={150}
           />
         </label>
 
@@ -127,6 +202,8 @@ ${form.details}
             value={form.phone}
             onChange={handleChange}
             placeholder="+92 300 0000000"
+            minLength={7}
+            maxLength={50}
             required
           />
         </label>
@@ -190,13 +267,35 @@ ${form.details}
           onChange={handleChange}
           rows={7}
           placeholder="Describe your project, objectives and important requirements."
+          minLength={10}
+          maxLength={5000}
           required
         />
       </label>
 
-      <button type="submit" className="primaryButton submitButton">
-        <Send size={18} />
-        Request Quote on WhatsApp
+      {error && (
+        <div className="formError" role="alert">
+          <AlertCircle size={20} />
+          <span>{error}</span>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="primaryButton submitButton"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <>
+            <LoaderCircle className="loadingSpinner" size={18} />
+            Submitting...
+          </>
+        ) : (
+          <>
+            <Send size={18} />
+            Submit & Continue on WhatsApp
+          </>
+        )}
       </button>
     </form>
   );
