@@ -230,9 +230,9 @@ def download_application_cv(
 
     if not cv_path.is_file():
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="CV file not found.",
-        )
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="CV file not found.",
+    )
 
     return FileResponse(
         path=cv_path,
