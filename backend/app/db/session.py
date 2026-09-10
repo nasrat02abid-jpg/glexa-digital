@@ -4,22 +4,33 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 
+database_url = settings.database_url
+
+# Railway provides postgresql://, but this project uses Psycopg 3.
+if database_url.startswith("postgresql://"):
+    database_url = database_url.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1,
+    )
+
+
 engine = create_engine(
-    settings.database_url,
+    database_url,
     pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(
-    bind=engine,
-    autoflush=False,
     autocommit=False,
+    autoflush=False,
+    bind=engine,
 )
 
 
 def get_db():
-    database = SessionLocal()
+    db = SessionLocal()
 
     try:
-        yield database
+        yield db
     finally:
-        database.close()
+        db.close()
