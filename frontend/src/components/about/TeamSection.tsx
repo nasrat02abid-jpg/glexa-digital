@@ -5,7 +5,6 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa6";
-
 const teamMembers = [
   {
     name: "Nasrat Abid",
@@ -37,6 +36,33 @@ const teamMembers = [
       },
     ],
   },
+
+  {
+    name: "Awais Khan",
+    role: "Chairman",
+    image: "/team/awais-khan.png",
+    description:
+      "Providing strategic leadership, business direction and long-term vision for Glexa Digital.",
+    skills: [
+      "Strategic Leadership",
+      "Business Development",
+      "Corporate Relations",
+      "Growth Strategy",
+    ],
+    links: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/awaiskhanlmar/",
+        icon: FaLinkedinIn,
+      },
+      {
+        label: "Facebook",
+        href: "https://www.facebook.com/awais.khan.75839923",
+        icon: FaFacebookF,
+      },
+    ],
+  },
+
   {
     name: "Syed Muzammil Raza",
     role: "Creative & Social Media Lead",
