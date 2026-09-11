@@ -85,47 +85,54 @@ export default function PortfolioManager({
   };
 
   const submit = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
+  event: FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+  const formData = new FormData(event.currentTarget);
 
-    // Unchecked HTML checkboxes are normally omitted from FormData.
-    // These lines ensure the backend always receives true or false.
-    formData.set(
-      "is_published",
-      String(formData.has("is_published"))
+  // When editing without selecting a new image,
+  // remove the empty File so the current image is preserved.
+  const image = formData.get("image");
+
+  if (image instanceof File && image.size === 0) {
+    formData.delete("image");
+  }
+
+  // Always send explicit checkbox values.
+  formData.set(
+    "is_published",
+    formData.has("is_published") ? "true" : "false"
+  );
+
+  formData.set(
+    "is_featured",
+    formData.has("is_featured") ? "true" : "false"
+  );
+
+  setBusy(true);
+  setError("");
+
+  try {
+    await savePortfolioProject(
+      formData,
+      editing?.id
     );
 
-    formData.set(
-      "is_featured",
-      String(formData.has("is_featured"))
+    setShowForm(false);
+    setEditing(null);
+
+    await load();
+  } catch (saveError) {
+    setError(
+      saveError instanceof Error
+        ? saveError.message
+        : "Unable to save project."
     );
-
-    setBusy(true);
-    setError("");
-
-    try {
-      await savePortfolioProject(
-        formData,
-        editing?.id
-      );
-
-      setShowForm(false);
-      setEditing(null);
-
-      await load();
-    } catch (saveError) {
-      setError(
-        saveError instanceof Error
-          ? saveError.message
-          : "Unable to save project."
-      );
-    } finally {
-      setBusy(false);
-    }
-  };
+  } finally {
+    setBusy(false);
+  }
+};
 
   const remove = async (
     project: PortfolioProject
