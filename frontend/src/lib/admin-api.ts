@@ -54,6 +54,22 @@ export type JobApplication = {
   created_at: string;
 };
 
+export type PortfolioProject = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  category: string;
+  services: string | null;
+  project_url: string | null;
+  image_url: string;
+  is_featured: boolean;
+  is_published: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
 type RecordType = "inquiries" | "quotes" | "applications";
 
 export async function loginAdmin(
@@ -210,4 +226,21 @@ export async function downloadApplicationCv(
   anchor.remove();
 
   URL.revokeObjectURL(downloadUrl);
+}
+
+export function getPortfolioProjects() {
+  return adminRequest<PortfolioProject[]>("/api/admin/portfolio");
+}
+
+export function savePortfolioProject(form: FormData, id?: number) {
+  return adminRequest<PortfolioProject>(
+    id ? `/api/admin/portfolio/${id}` : "/api/admin/portfolio",
+    { method: id ? "PUT" : "POST", body: form }
+  );
+}
+
+export function deletePortfolioProject(id: number) {
+  return adminRequest<void>(`/api/admin/portfolio/${id}`, {
+    method: "DELETE",
+  });
 }

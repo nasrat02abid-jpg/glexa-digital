@@ -12,6 +12,7 @@ import {
   LogOut,
   Mail,
   MessageSquareText,
+  Images,
   RefreshCw,
   Users,
 } from "lucide-react";
@@ -30,8 +31,10 @@ import {
   removeAdminToken,
   updateRecordStatus,
 } from "@/lib/admin-api";
+import PortfolioManager from "@/components/admin/PortfolioManager";
 
-type DashboardTab = "inquiries" | "quotes" | "applications";
+type DashboardTab = "inquiries" | "quotes" | "applications" | "portfolio";
+type RecordTab = Exclude<DashboardTab, "portfolio">;
 
 const generalStatuses = [
   "new",
@@ -77,6 +80,7 @@ export default function AdminDashboard() {
   const [quotes, setQuotes] = useState<QuoteRequest[]>([]);
   const [applications, setApplications] =
     useState<JobApplication[]>([]);
+  const [portfolioCount, setPortfolioCount] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
   const [updatingRecord, setUpdatingRecord] = useState("");
@@ -137,7 +141,7 @@ export default function AdminDashboard() {
   };
 
   const handleStatusChange = async (
-    type: DashboardTab,
+    type: RecordTab,
     id: number,
     newStatus: string
   ) => {
@@ -268,6 +272,16 @@ export default function AdminDashboard() {
             Applications
             <span>{stats.applications}</span>
           </button>
+
+          <button
+            type="button"
+            className={activeTab === "portfolio" ? "active" : ""}
+            onClick={() => setActiveTab("portfolio")}
+          >
+            <Images size={19} />
+            Portfolio
+            <span>{portfolioCount}</span>
+          </button>
         </nav>
 
         <button
@@ -286,7 +300,7 @@ export default function AdminDashboard() {
             <p className="tag">ADMIN WORKSPACE</p>
             <h1>Dashboard Overview</h1>
             <p>
-              Manage customer inquiries, quotations and candidates.
+              Manage inquiries, quotations, candidates and portfolio projects.
             </p>
           </div>
 
@@ -359,13 +373,22 @@ export default function AdminDashboard() {
                   "Quotation Requests"}
                 {activeTab === "applications" &&
                   "Job Applications"}
+                {activeTab === "portfolio" &&
+                  "Portfolio Management"}
               </h2>
 
-              <p>Newest submissions appear first.</p>
+              <p>
+                {activeTab === "portfolio"
+                  ? "Manage the projects shown on your website."
+                  : "Newest submissions appear first."}
+              </p>
             </div>
           </div>
 
           <div className="adminTableWrapper">
+            {activeTab === "portfolio" && (
+              <PortfolioManager onCountChange={setPortfolioCount} />
+            )}
             {activeTab === "inquiries" && (
               <table className="adminTable">
                 <thead>
