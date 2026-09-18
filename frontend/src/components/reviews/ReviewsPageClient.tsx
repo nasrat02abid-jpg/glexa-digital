@@ -1,11 +1,12 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { CheckCircle2, LoaderCircle, Quote, Star } from "lucide-react";
+import { CheckCircle2, ImagePlus, LoaderCircle, Quote, Star } from "lucide-react";
 
 import {
   CustomerReview,
   getPublishedReviews,
+  reviewPhotoUrl,
   submitCustomerReview,
 } from "@/lib/reviews-api";
 import styles from "./ReviewsPageClient.module.css";
@@ -59,19 +60,13 @@ export default function ReviewsPageClient() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+    formData.set("rating", String(rating));
     setSubmitting(true);
     setError("");
     setSuccess(false);
 
     try {
-      await submitCustomerReview({
-        customer_name: String(formData.get("customer_name") || ""),
-        company: String(formData.get("company") || ""),
-        service: String(formData.get("service") || ""),
-        rating,
-        review: String(formData.get("review") || ""),
-        website: String(formData.get("website") || ""),
-      });
+      await submitCustomerReview(formData);
       form.reset();
       setRating(5);
       setSuccess(true);
@@ -150,6 +145,20 @@ export default function ReviewsPageClient() {
               </div>
             </fieldset>
 
+            <label className={styles.photoUpload}>
+              <ImagePlus size={22} />
+              <span>
+                <strong>Your photo</strong>
+                JPG, PNG or WebP · Maximum 5 MB
+              </span>
+              <input
+                name="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                required
+              />
+            </label>
+
             <label>
               Your honest review
               <textarea
@@ -192,7 +201,14 @@ export default function ReviewsPageClient() {
                 <Stars rating={item.rating} />
                 <p className={styles.reviewText}>{item.review}</p>
                 <div className={styles.customer}>
-                  <span>{item.customer_name.charAt(0).toUpperCase()}</span>
+                  {item.photo_url ? (
+                    <img
+                      src={reviewPhotoUrl(item.photo_url) || ""}
+                      alt={`${item.customer_name} profile`}
+                    />
+                  ) : (
+                    <span>{item.customer_name.charAt(0).toUpperCase()}</span>
+                  )}
                   <div>
                     <strong>{item.customer_name}</strong>
                     <small>{item.company || item.service}</small>

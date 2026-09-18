@@ -32,6 +32,7 @@ class ReviewResponse(BaseModel):
     service: str
     rating: int
     review: str
+    photo_url: str | None
     status: str
     is_featured: bool
     created_at: datetime

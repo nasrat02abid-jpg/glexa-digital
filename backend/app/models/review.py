@@ -15,6 +15,7 @@ class CustomerReview(Base):
     service: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
     rating: Mapped[int] = mapped_column(Integer, nullable=False)
     review: Mapped[str] = mapped_column(Text, nullable=False)
+    photo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[str] = mapped_column(
         String(20), nullable=False, default="pending", index=True
     )

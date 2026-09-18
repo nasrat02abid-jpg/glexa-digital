@@ -9,6 +9,7 @@ import {
   getCustomerReviews,
   moderateCustomerReview,
 } from "@/lib/admin-api";
+import { reviewPhotoUrl } from "@/lib/reviews-api";
 
 type Props = { onCountChange?: (count: number) => void };
 
@@ -68,9 +69,17 @@ export default function ReviewManager({ onCountChange }: Props) {
         {reviews.map((item) => (
           <article className="adminReviewCard" key={item.id}>
             <div className="adminReviewTop">
-              <div>
+              <div className="adminReviewCustomer">
+                {item.photo_url && (
+                  <img
+                    src={reviewPhotoUrl(item.photo_url) || ""}
+                    alt={`${item.customer_name} profile`}
+                  />
+                )}
+                <div>
                 <strong>{item.customer_name}</strong>
                 <span>{item.company || "Individual customer"} · {item.service}</span>
+                </div>
               </div>
               <div className="adminReviewStars" aria-label={`${item.rating} stars`}>
                 {Array.from({ length: 5 }, (_, index) => (

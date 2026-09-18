@@ -15,6 +15,12 @@
 .ratingField { border: 0; padding: 0; margin: 0; }
 .ratingButtons { display: flex; gap: .35rem; margin-top: .4rem; }
 .ratingButtons button { border: 0; padding: .2rem; background: transparent; color: #f59e0b; cursor: pointer; }
+.photoUpload { border: 1px dashed #b8c9df; border-radius: 14px; padding: 1rem; display: grid; grid-template-columns: auto 1fr; gap: .75rem; align-items: center; background: #f8fbff; cursor: pointer; }
+.photoUpload > svg { color: #1768e5; }
+.photoUpload span, .photoUpload strong { display: block; }
+.photoUpload span { color: #64748b; font-size: .8rem; font-weight: 500; }
+.photoUpload strong { color: #253858; font-size: .9rem; margin-bottom: .15rem; }
+.photoUpload input { grid-column: 1 / -1; margin-top: .25rem; padding: .65rem; background: white; cursor: pointer; }
 .submitButton { border: 0; border-radius: 12px; padding: .95rem 1.25rem; background: #1768e5; color: white; font-weight: 800; display: flex; gap: .5rem; justify-content: center; cursor: pointer; }
 .submitButton:disabled { opacity: .65; cursor: wait; }
 .success, .error { margin: 1rem 0; padding: .9rem 1rem; border-radius: 12px; display: flex; gap: .6rem; align-items: center; }
@@ -30,6 +36,7 @@
 .reviewText { color: #475569; line-height: 1.75; margin: 1rem 0 1.25rem; }
 .customer { display: flex; gap: .8rem; align-items: center; }
 .customer > span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: #eaf2ff; color: #1768e5; font-weight: 900; }
+.customer > img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #d9e7ff; }
 .customer strong, .customer small { display: block; }
 .customer strong { color: #10244b; }
 .customer small { color: #64748b; margin-top: .1rem; }
