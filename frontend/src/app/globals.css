@@ -3351,3 +3351,59 @@ html.dark .portfolioStatement {
     min-height: 100px;
   }
 }
+/* Customer reviews */
+.homeReviews {
+  padding: 7rem 6vw;
+  background: #f7faff;
+}
+
+.homeReviewsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+
+.homeReviewsGrid article {
+  background: white;
+  border: 1px solid #e3ebf6;
+  border-radius: 20px;
+  padding: 1.6rem;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.05);
+}
+
+.homeReviewStars,
+.adminReviewStars {
+  display: flex;
+  gap: 0.2rem;
+  color: #f59e0b;
+}
+
+.homeReviewsGrid article > p {
+  color: #475569;
+  line-height: 1.75;
+  margin: 1rem 0 1.25rem;
+}
+
+.homeReviewsGrid strong,
+.homeReviewsGrid span {
+  display: block;
+}
+
+.homeReviewsGrid strong { color: #10244b; }
+.homeReviewsGrid span { color: #64748b; font-size: 0.88rem; margin-top: 0.2rem; }
+
+.adminReviewsManager { padding: 1rem; }
+.adminReviewList { display: grid; gap: 1rem; }
+.adminReviewCard { border: 1px solid #e3eaf4; border-radius: 16px; padding: 1.25rem; background: white; }
+.adminReviewTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.adminReviewTop strong, .adminReviewTop span { display: block; }
+.adminReviewTop span { color: #64748b; margin-top: 0.25rem; font-size: 0.88rem; }
+.adminReviewCard > p { color: #475569; line-height: 1.65; margin: 1rem 0; }
+.adminReviewControls { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.adminReviewControls label { display: flex; gap: 0.5rem; align-items: center; color: #475569; }
+.adminReviewControls button { border: 0; color: #be123c; background: #fff1f2; border-radius: 9px; padding: 0.65rem 0.85rem; display: flex; gap: 0.4rem; align-items: center; cursor: pointer; }
+
+@media (max-width: 850px) {
+  .homeReviewsGrid { grid-template-columns: 1fr; }
+}

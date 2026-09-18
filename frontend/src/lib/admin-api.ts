@@ -12,7 +12,21 @@ export type DashboardStats = {
   inquiries: number;
   quotes: number;
   applications: number;
+  reviews: number;
   total: number;
+};
+
+export type CustomerReview = {
+  id: number;
+  customer_name: string;
+  company: string | null;
+  service: string;
+  rating: number;
+  review: string;
+  status: string;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
 };
 
 export type Inquiry = {
@@ -243,4 +257,20 @@ export function deletePortfolioProject(id: number) {
   return adminRequest<void>(`/api/admin/portfolio/${id}`, {
     method: "DELETE",
   });
+}
+
+export function getCustomerReviews() {
+  return adminRequest<CustomerReview[]>("/api/admin/reviews?skip=0&limit=100");
+}
+
+export function moderateCustomerReview(id: number, status: string, isFeatured: boolean) {
+  return adminRequest<CustomerReview>(`/api/admin/reviews/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status, is_featured: isFeatured }),
+  });
+}
+
+export function deleteCustomerReview(id: number) {
+  return adminRequest<void>(`/api/admin/reviews/${id}`, { method: "DELETE" });
 }

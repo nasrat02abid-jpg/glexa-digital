@@ -59,7 +59,7 @@ export default function PortfolioManager({
   }, [onCountChange]);
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => void load());
   }, [load]);
 
   const openCreate = () => {

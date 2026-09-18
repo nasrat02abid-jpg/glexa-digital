@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import HomeReviewsSection from "@/components/reviews/HomeReviewsSection";
 
 const services = [
   {
@@ -213,6 +214,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <HomeReviewsSection />
 
       <section className="contact" id="contact">
         <p className="tag">START A PROJECT</p>

@@ -13,6 +13,7 @@ import {
   Mail,
   MessageSquareText,
   Images,
+  Star,
   RefreshCw,
   Users,
 } from "lucide-react";
@@ -32,9 +33,10 @@ import {
   updateRecordStatus,
 } from "@/lib/admin-api";
 import PortfolioManager from "@/components/admin/PortfolioManager";
+import ReviewManager from "@/components/admin/ReviewManager";
 
-type DashboardTab = "inquiries" | "quotes" | "applications" | "portfolio";
-type RecordTab = Exclude<DashboardTab, "portfolio">;
+type DashboardTab = "inquiries" | "quotes" | "applications" | "portfolio" | "reviews";
+type RecordTab = "inquiries" | "quotes" | "applications";
 
 const generalStatuses = [
   "new",
@@ -73,6 +75,7 @@ export default function AdminDashboard() {
     inquiries: 0,
     quotes: 0,
     applications: 0,
+    reviews: 0,
     total: 0,
   });
 
@@ -81,6 +84,7 @@ export default function AdminDashboard() {
   const [applications, setApplications] =
     useState<JobApplication[]>([]);
   const [portfolioCount, setPortfolioCount] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
   const [updatingRecord, setUpdatingRecord] = useState("");
@@ -132,7 +136,7 @@ export default function AdminDashboard() {
       return;
     }
 
-    void loadDashboard();
+    queueMicrotask(() => void loadDashboard());
   }, [loadDashboard, router]);
 
   const handleLogout = () => {
@@ -249,6 +253,16 @@ export default function AdminDashboard() {
             <MessageSquareText size={19} />
             Inquiries
             <span>{stats.inquiries}</span>
+          </button>
+
+          <button
+            type="button"
+            className={activeTab === "reviews" ? "active" : ""}
+            onClick={() => setActiveTab("reviews")}
+          >
+            <Star size={19} />
+            Reviews
+            <span>{reviewsCount || stats.reviews}</span>
           </button>
 
           <button
@@ -375,11 +389,14 @@ export default function AdminDashboard() {
                   "Job Applications"}
                 {activeTab === "portfolio" &&
                   "Portfolio Management"}
+                {activeTab === "reviews" && "Customer Reviews"}
               </h2>
 
               <p>
                 {activeTab === "portfolio"
                   ? "Manage the projects shown on your website."
+                  : activeTab === "reviews"
+                  ? "Approve genuine feedback before it appears publicly."
                   : "Newest submissions appear first."}
               </p>
             </div>
@@ -388,6 +405,9 @@ export default function AdminDashboard() {
           <div className="adminTableWrapper">
             {activeTab === "portfolio" && (
               <PortfolioManager onCountChange={setPortfolioCount} />
+            )}
+            {activeTab === "reviews" && (
+              <ReviewManager onCountChange={setReviewsCount} />
             )}
             {activeTab === "inquiries" && (
               <table className="adminTable">

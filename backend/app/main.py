@@ -14,10 +14,11 @@ from app.models import Inquiry
 from app.models.application import JobApplication
 from app.models.quote import QuoteRequest
 from app.models.portfolio import PortfolioProject  # noqa: F401
+from app.models.review import CustomerReview  # noqa: F401
 from app.api.auth import router as auth_router
 from app.models.admin import Admin
 from app.api.admin import router as admin_router
-from app.api import portfolio, portfolio_admin
+from app.api import portfolio, portfolio_admin, reviews, reviews_admin
 
 Base.metadata.create_all(bind=engine)
 
@@ -62,6 +63,8 @@ app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(portfolio.router)
 app.include_router(portfolio_admin.router)
+app.include_router(reviews.router)
+app.include_router(reviews_admin.router)
 
 
 @app.get("/")
