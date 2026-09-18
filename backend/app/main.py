@@ -23,6 +23,26 @@ from app.api import portfolio, portfolio_admin, reviews, reviews_admin
 Base.metadata.create_all(bind=engine)
 
 
+def ensure_portfolio_video_column() -> None:
+    inspector = inspect(engine)
+    if "portfolio_projects" not in inspector.get_table_names():
+        return
+    columns = {
+        column["name"] for column in inspector.get_columns("portfolio_projects")
+    }
+    if "video_url" not in columns:
+        with engine.begin() as connection:
+            connection.execute(
+                text(
+                    "ALTER TABLE portfolio_projects "
+                    "ADD COLUMN video_url VARCHAR(500)"
+                )
+            )
+
+
+ensure_portfolio_video_column()
+
+
 def ensure_review_photo_column() -> None:
     """Keep existing Railway databases compatible without a migration tool."""
     inspector = inspect(engine)

@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, PlayCircle } from "lucide-react";
 
 import { getPublicPortfolio } from "@/lib/portfolio-api";
 import { portfolioImageUrl } from "@/lib/portfolio-api";
@@ -25,11 +25,23 @@ export default async function PortfolioGrid({ featured, limit }: Props) {
             <h2>{project.title}</h2>
             <p>{project.description}</p>
             {project.services && <small>{project.services}</small>}
-            {project.project_url && (
-              <a href={project.project_url} target="_blank" rel="noopener noreferrer">
-                View Project <ExternalLink size={16} />
-              </a>
-            )}
+            <div className={styles.links}>
+              {project.project_url && (
+                <a href={project.project_url} target="_blank" rel="noopener noreferrer">
+                  View Project <ExternalLink size={16} />
+                </a>
+              )}
+              {project.video_url && (
+                <a
+                  href={project.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.videoLink}
+                >
+                  Watch Video <PlayCircle size={16} />
+                </a>
+              )}
+            </div>
           </div>
         </article>
       ))}
