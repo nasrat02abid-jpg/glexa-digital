@@ -11,6 +11,7 @@ from app.models import Inquiry
 from app.models.admin import Admin
 from app.models.application import JobApplication
 from app.models.quote import QuoteRequest
+from app.models.review import CustomerReview
 from app.schemas.admin import DashboardStats, StatusUpdate
 from app.schemas.application import JobApplicationResponse
 from app.schemas.inquiry import ContactInquiryResponse
@@ -58,11 +59,21 @@ def get_dashboard_stats(
         select(func.count()).select_from(JobApplication)
     ) or 0
 
+    reviews_count = db.scalar(
+        select(func.count()).select_from(CustomerReview)
+    ) or 0
+
     return DashboardStats(
         inquiries=inquiries_count,
         quotes=quotes_count,
         applications=applications_count,
-        total=inquiries_count + quotes_count + applications_count,
+        reviews=reviews_count,
+        total=(
+            inquiries_count
+            + quotes_count
+            + applications_count
+            + reviews_count
+        ),
     )
 
 

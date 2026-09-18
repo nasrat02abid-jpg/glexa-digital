@@ -1,0 +1,40 @@
+.page { background: #f8fafc; min-height: 100vh; }
+.hero { padding: 7rem 6vw 4rem; text-align: center; background: linear-gradient(135deg, #08152f, #153c78); color: white; }
+.hero h1 { max-width: 800px; margin: .8rem auto; font-size: clamp(2.4rem, 6vw, 4.8rem); line-height: 1.04; }
+.hero > p:last-child { max-width: 680px; margin: 0 auto; color: #d9e7ff; line-height: 1.8; }
+.content { max-width: 1240px; margin: 0 auto; padding: 5rem 1.5rem; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 3rem; align-items: start; }
+.formCard { background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 18px 55px rgba(15, 23, 42, .09); position: sticky; top: 110px; }
+.formCard h2, .listHeading h2 { color: #10244b; font-size: 2rem; margin: .4rem 0; }
+.formCard > div > p:last-child { color: #64748b; margin-bottom: 1.5rem; }
+.formCard form { display: grid; gap: 1.15rem; }
+.formCard label, .ratingField legend { color: #253858; font-size: .9rem; font-weight: 700; }
+.formCard label span { color: #94a3b8; font-weight: 500; }
+.formCard input, .formCard select, .formCard textarea { width: 100%; margin-top: .45rem; border: 1px solid #dbe4f0; border-radius: 12px; padding: .85rem 1rem; font: inherit; color: #10244b; background: #fff; }
+.formCard input:focus, .formCard select:focus, .formCard textarea:focus { outline: 3px solid rgba(37, 99, 235, .14); border-color: #2563eb; }
+.twoColumns { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.ratingField { border: 0; padding: 0; margin: 0; }
+.ratingButtons { display: flex; gap: .35rem; margin-top: .4rem; }
+.ratingButtons button { border: 0; padding: .2rem; background: transparent; color: #f59e0b; cursor: pointer; }
+.submitButton { border: 0; border-radius: 12px; padding: .95rem 1.25rem; background: #1768e5; color: white; font-weight: 800; display: flex; gap: .5rem; justify-content: center; cursor: pointer; }
+.submitButton:disabled { opacity: .65; cursor: wait; }
+.success, .error { margin: 1rem 0; padding: .9rem 1rem; border-radius: 12px; display: flex; gap: .6rem; align-items: center; }
+.success { background: #ecfdf5; color: #047857; }
+.error { background: #fff1f2; color: #be123c; }
+.honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.reviewsColumn { min-width: 0; }
+.listHeading { margin-bottom: 1.5rem; }
+.reviewList { display: grid; gap: 1rem; }
+.reviewCard { background: white; border: 1px solid #e6edf7; border-radius: 20px; padding: 1.6rem; position: relative; }
+.quoteIcon { position: absolute; top: 1.5rem; right: 1.5rem; color: #d9e7ff; }
+.stars { display: flex; gap: .2rem; color: #f59e0b; }
+.reviewText { color: #475569; line-height: 1.75; margin: 1rem 0 1.25rem; }
+.customer { display: flex; gap: .8rem; align-items: center; }
+.customer > span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: #eaf2ff; color: #1768e5; font-weight: 900; }
+.customer strong, .customer small { display: block; }
+.customer strong { color: #10244b; }
+.customer small { color: #64748b; margin-top: .1rem; }
+.loading, .empty { color: #64748b; background: white; border-radius: 16px; padding: 2rem; text-align: center; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 900px) { .content { grid-template-columns: 1fr; } .formCard { position: static; } }
+@media (max-width: 560px) { .hero { padding: 5rem 1.25rem 3rem; } .content { padding: 3rem 1rem; } .formCard { padding: 1.25rem; } .twoColumns { grid-template-columns: 1fr; } }

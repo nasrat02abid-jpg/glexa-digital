@@ -5,6 +5,7 @@ class DashboardStats(BaseModel):
     inquiries: int
     quotes: int
     applications: int
+    reviews: int
     total: int
 
 

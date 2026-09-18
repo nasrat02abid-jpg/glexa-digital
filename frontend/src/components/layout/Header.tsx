@@ -13,8 +13,10 @@ export default function Header() {
     const savedTheme = localStorage.getItem("glexa-theme");
     const isDark = savedTheme === "dark";
 
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
+    queueMicrotask(() => {
+      setDarkMode(isDark);
+      document.documentElement.classList.toggle("dark", isDark);
+    });
   }, []);
 
   const toggleTheme = () => {
@@ -55,6 +57,10 @@ export default function Header() {
 
           <Link href="/portfolio" onClick={closeMenu}>
             Portfolio
+          </Link>
+
+          <Link href="/reviews" onClick={closeMenu}>
+            Reviews
           </Link>
 
           <Link href="/careers" onClick={closeMenu}>
