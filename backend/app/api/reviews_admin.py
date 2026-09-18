@@ -6,6 +6,7 @@ from app.core.security import get_current_admin
 from app.db.session import get_db
 from app.models.review import CustomerReview
 from app.schemas.review import ReviewModerationUpdate, ReviewResponse
+from app.api.reviews import delete_review_photo
 
 router = APIRouter(
     prefix="/api/admin/reviews",
@@ -57,6 +58,8 @@ def delete_review(review_id: int, db: Session = Depends(get_db)):
     if review is None:
         raise HTTPException(status_code=404, detail="Review not found.")
 
+    photo_url = review.photo_url
     db.delete(review)
     db.commit()
+    delete_review_photo(photo_url)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

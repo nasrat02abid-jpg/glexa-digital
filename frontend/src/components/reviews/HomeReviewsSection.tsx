@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CustomerReview, getPublishedReviews } from "@/lib/reviews-api";
+import { CustomerReview, getPublishedReviews, reviewPhotoUrl } from "@/lib/reviews-api";
 
 export default function HomeReviewsSection() {
   const [reviews, setReviews] = useState<CustomerReview[]>([]);
@@ -32,8 +32,18 @@ export default function HomeReviewsSection() {
               ))}
             </div>
             <p>“{item.review}”</p>
-            <strong>{item.customer_name}</strong>
-            <span>{item.company || item.service}</span>
+            <div className="homeReviewCustomer">
+              {item.photo_url && (
+                <img
+                  src={reviewPhotoUrl(item.photo_url) || ""}
+                  alt={`${item.customer_name} profile`}
+                />
+              )}
+              <div>
+                <strong>{item.customer_name}</strong>
+                <span>{item.company || item.service}</span>
+              </div>
+            </div>
           </article>
         ))}
       </div>

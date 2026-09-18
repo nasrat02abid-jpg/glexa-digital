@@ -7,19 +7,11 @@ export type CustomerReview = {
   service: string;
   rating: number;
   review: string;
+  photo_url: string | null;
   status: string;
   is_featured: boolean;
   created_at: string;
   updated_at: string;
-};
-
-export type ReviewSubmission = {
-  customer_name: string;
-  company: string;
-  service: string;
-  rating: number;
-  review: string;
-  website: string;
 };
 
 async function parseResponse<T>(response: Response): Promise<T> {
@@ -38,11 +30,16 @@ export async function getPublishedReviews(featured?: boolean) {
   return parseResponse<CustomerReview[]>(response);
 }
 
-export async function submitCustomerReview(payload: ReviewSubmission) {
+export function reviewPhotoUrl(path: string | null) {
+  if (!path) return null;
+  return path.startsWith("http") ? path : `${API_URL}${path}`;
+}
+
+export async function submitCustomerReview(formData: FormData) {
   const response = await fetch(`${API_URL}/api/reviews`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(payload),
+    headers: { Accept: "application/json" },
+    body: formData,
   });
   return parseResponse<CustomerReview>(response);
 }

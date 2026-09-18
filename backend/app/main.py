@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import text
+from sqlalchemy import inspect, text
 
 from app.api.applications import router as applications_router
 from app.api.inquiries import router as inquiries_router
@@ -21,6 +21,22 @@ from app.api.admin import router as admin_router
 from app.api import portfolio, portfolio_admin, reviews, reviews_admin
 
 Base.metadata.create_all(bind=engine)
+
+
+def ensure_review_photo_column() -> None:
+    """Keep existing Railway databases compatible without a migration tool."""
+    inspector = inspect(engine)
+    if "customer_reviews" not in inspector.get_table_names():
+        return
+    columns = {column["name"] for column in inspector.get_columns("customer_reviews")}
+    if "photo_url" not in columns:
+        with engine.begin() as connection:
+            connection.execute(
+                text("ALTER TABLE customer_reviews ADD COLUMN photo_url VARCHAR(500)")
+            )
+
+
+ensure_review_photo_column()
 
 app = FastAPI(
     title="Glexa Digital API",
