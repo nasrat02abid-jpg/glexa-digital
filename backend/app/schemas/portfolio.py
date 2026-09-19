@@ -13,6 +13,7 @@ class PortfolioProjectResponse(BaseModel):
     category: str
     services: str | None
     project_url: str | None
+    video_url: str | None
     image_url: str
     is_featured: bool
     is_published: bool

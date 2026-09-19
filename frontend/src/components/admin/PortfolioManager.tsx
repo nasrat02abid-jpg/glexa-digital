@@ -11,6 +11,7 @@ import {
   ExternalLink,
   ImagePlus,
   LoaderCircle,
+  PlayCircle,
   Plus,
   Trash2,
   X,
@@ -275,6 +276,17 @@ export default function PortfolioManager({
               />
             </label>
 
+            <label>
+              Video link (optional)
+
+              <input
+                name="video_url"
+                type="url"
+                placeholder="https://youtube.com/watch?v=..."
+                defaultValue={editing?.video_url ?? ""}
+              />
+            </label>
+
             <label className={styles.upload}>
               <ImagePlus size={22} />
 
@@ -373,6 +385,17 @@ export default function PortfolioManager({
                   >
                     <ExternalLink size={16} />
                     View
+                  </a>
+                )}
+
+                {project.video_url && (
+                  <a
+                    href={project.video_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PlayCircle size={16} />
+                    Watch Video
                   </a>
                 )}
 

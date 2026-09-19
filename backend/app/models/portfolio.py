@@ -13,6 +13,7 @@ class PortfolioProject(Base):
     category = Column(String(100), nullable=False, index=True)
     services = Column(String(500), nullable=True)
     project_url = Column(String(500), nullable=True)
+    video_url = Column(String(500), nullable=True)
     image_url = Column(String(500), nullable=False)
     is_featured = Column(Boolean, nullable=False, default=False, server_default="false")
     is_published = Column(Boolean, nullable=False, default=True, server_default="true")

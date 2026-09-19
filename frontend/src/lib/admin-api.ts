@@ -23,7 +23,6 @@ export type CustomerReview = {
   service: string;
   rating: number;
   review: string;
-  photo_url: string | null;
   status: string;
   is_featured: boolean;
   created_at: string;
@@ -77,6 +76,7 @@ export type PortfolioProject = {
   category: string;
   services: string | null;
   project_url: string | null;
+  video_url: string | null;
   image_url: string;
   is_featured: boolean;
   is_published: boolean;

@@ -1,6 +1,7 @@
 import os
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
@@ -28,6 +29,19 @@ ALLOWED_TYPES = {
     "image/webp": ".webp",
 }
 MAX_IMAGE_BYTES = 8 * 1024 * 1024
+
+
+def clean_video_url(value: str | None) -> str | None:
+    if not value or not value.strip():
+        return None
+    cleaned = value.strip()
+    parsed = urlparse(cleaned)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Video link must be a valid HTTP or HTTPS URL.",
+        )
+    return cleaned
 
 
 def make_slug(value: str) -> str:
@@ -94,6 +108,7 @@ async def create_portfolio_project(
     category: str = Form(..., min_length=2, max_length=100),
     services: str | None = Form(None),
     project_url: str | None = Form(None),
+    video_url: str | None = Form(None, max_length=500),
     is_featured: bool = Form(False),
     is_published: bool = Form(True),
     display_order: int = Form(0),
@@ -108,6 +123,7 @@ async def create_portfolio_project(
         category=category.strip(),
         services=services.strip() if services else None,
         project_url=project_url.strip() if project_url else None,
+        video_url=clean_video_url(video_url),
         image_url=image_url,
         is_featured=is_featured,
         is_published=is_published,
@@ -132,6 +148,7 @@ async def update_portfolio_project(
     category: str = Form(..., min_length=2, max_length=100),
     services: str | None = Form(None),
     project_url: str | None = Form(None),
+    video_url: str | None = Form(None, max_length=500),
     is_featured: bool = Form(False),
     is_published: bool = Form(True),
     display_order: int = Form(0),
@@ -150,6 +167,7 @@ async def update_portfolio_project(
     project.category = category.strip()
     project.services = services.strip() if services else None
     project.project_url = project_url.strip() if project_url else None
+    project.video_url = clean_video_url(video_url)
     project.is_featured = is_featured
     project.is_published = is_published
     project.display_order = display_order
