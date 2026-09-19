@@ -23,6 +23,7 @@ export type CustomerReview = {
   service: string;
   rating: number;
   review: string;
+  photo_url: string | null;
   status: string;
   is_featured: boolean;
   created_at: string;
