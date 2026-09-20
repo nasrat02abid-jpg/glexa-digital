@@ -47,10 +47,6 @@ export default function Header() {
             Home
           </Link>
 
-          <Link href="/about" onClick={closeMenu}>
-            About
-          </Link>
-
           <Link href="/services" onClick={closeMenu}>
             Services
           </Link>
@@ -69,6 +65,10 @@ export default function Header() {
 
           <Link href="/contact" onClick={closeMenu}>
             Contact
+          </Link>
+
+          <Link href="/about" onClick={closeMenu}>
+            About
           </Link>
 
           <Link href="/quote" className="headerCta" onClick={closeMenu}>
