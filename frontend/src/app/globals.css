@@ -591,26 +591,49 @@ html.dark .contact {
 
 /* Footer */
 
-footer {
-  padding: 32px 6%;
+.siteFooter {
+  padding: 72px 6% 30px;
+  color: #aab9d0;
+  background: #101827;
+}
+
+.footerInner { max-width: 1320px; margin: 0 auto; }
+.footerColumns { display: grid; grid-template-columns: 1.45fr 1fr 1fr 1.2fr; gap: 48px; }
+.footerBrand { display: inline-flex; padding: 4px 12px; background: #fff; border-radius: 12px; }
+.footerLogo { width: 130px; height: 64px; object-fit: contain; }
+.footerIntro p { max-width: 265px; margin: 18px 0 0; line-height: 1.7; }
+.footerGroup { display: flex; flex-direction: column; align-items: flex-start; gap: 13px; min-width: 0; }
+.footerGroup h2 { margin: 3px 0 12px; color: #fff; font-size: 16px; font-weight: 700; }
+.footerGroup a, .footerGroup span {
+  color: #aab9d0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.footerGroup a:hover, .footerBottom a:hover { color: #64d7f5; }
+.footerContact a, .footerContact span { display: inline-flex; align-items: flex-start; gap: 9px; }
+.footerContact svg { flex: none; color: #31c5ee; margin-top: 2px; }
+.footerBottom {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 30px;
-  color: var(--muted);
-  background: var(--surface);
-  border-top: 1px solid var(--border);
+  gap: 20px;
+  padding-top: 26px;
+  margin-top: 52px;
+  border-top: 1px solid #324052;
+  font-size: 13px;
+}
+.footerBottom a { color: #65d6fa; font-weight: 600; }
+
+@media (max-width: 950px) {
+  .footerColumns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px; }
 }
 
-.footerLogo {
-  width: 140px;
-  height: 70px;
-  object-fit: contain;
-}
-
-footer a {
-  color: var(--blue);
-  font-weight: 700;
+@media (max-width: 600px) {
+  .siteFooter { padding: 55px 20px 28px; text-align: left; }
+  .footerColumns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 38px 20px; }
+  .footerIntro, .footerContact { grid-column: 1 / -1; }
+  .footerBottom { flex-direction: column; margin-top: 42px; }
 }
 
 /* Tablet */
